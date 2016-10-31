@@ -23,7 +23,7 @@ if ! [ -f "secrets.yaml" ];
 then
     echo "secrets.yaml not present. Randomly generating and uploading..."
     drone_token=`cat /dev/urandom | env LC_CTYPE=C tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1`
-    b64_drone_token=`echo $drone_token | base64`
+    b64_drone_token=`echo -n $drone_token | base64`
     sed "s/REPLACE-THIS-WITH-BASE64-ENCODED-VALUE/${b64_drone_token}/g" .secrets.yaml.tpl > secrets.yaml
 else
     kubectl delete secrets drone-secrets 2> /dev/null
